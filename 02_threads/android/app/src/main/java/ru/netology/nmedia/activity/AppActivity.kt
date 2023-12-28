@@ -3,16 +3,19 @@ package ru.netology.nmedia.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.media.CamcorderProfile.getAll
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
+import ru.netology.nmedia.repository.PostRepositoryImpl
 
 class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
@@ -42,6 +45,15 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
         }
 
         checkGoogleApiAvailability()
+
+        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
+        val postRepository = PostRepositoryImpl()
+
+        swipeRefreshLayout.setOnRefreshListener {
+
+            postRepository.getAll()
+            swipeRefreshLayout.isRefreshing = false
+        }
     }
 
     private fun requestNotificationsPermission() {

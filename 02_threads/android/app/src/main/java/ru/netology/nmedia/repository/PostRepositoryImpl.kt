@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.internal.EMPTY_REQUEST
 import ru.netology.nmedia.dto.Post
 import java.util.concurrent.TimeUnit
 
@@ -36,7 +37,29 @@ class PostRepositoryImpl: PostRepository {
     }
 
     override fun likeById(id: Long) {
-        // TODO: do this in homework
+        val request: Request = Request.Builder()
+            .post("{}".toRequestBody(jsonType))
+            .url("${BASE_URL}/api/slow/posts/$id/likes")
+            .build()
+
+        client.newCall(request)
+            .execute()
+            .close()
+
+        getAll()
+    }
+
+    override fun unlikeById(id: Long) {
+        val request: Request = Request.Builder()
+            .delete()
+            .url("${BASE_URL}/api/slow/posts/$id/likes")
+            .build()
+
+        client.newCall(request)
+            .execute()
+            .close()
+
+        getAll()
     }
 
     override fun save(post: Post) {
@@ -48,6 +71,7 @@ class PostRepositoryImpl: PostRepository {
         client.newCall(request)
             .execute()
             .close()
+
     }
 
     override fun removeById(id: Long) {
@@ -60,4 +84,5 @@ class PostRepositoryImpl: PostRepository {
             .execute()
             .close()
     }
+
 }
