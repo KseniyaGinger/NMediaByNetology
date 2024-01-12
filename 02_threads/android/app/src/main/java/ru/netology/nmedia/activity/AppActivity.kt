@@ -46,14 +46,7 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
 
         checkGoogleApiAvailability()
 
-        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swipe_refresh_layout)
-        val postRepository = PostRepositoryImpl()
 
-        swipeRefreshLayout.setOnRefreshListener {
-
-            postRepository.getAll()
-            swipeRefreshLayout.isRefreshing = false
-        }
     }
 
     private fun requestNotificationsPermission() {

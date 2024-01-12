@@ -33,7 +33,7 @@ class FeedFragment : Fragment() {
             }
 
             override fun onLike(post: Post) {
-                viewModel.likeById(post.id)
+                viewModel.likeById(post)
             }
 
             override fun onRemove(post: Post) {
@@ -52,6 +52,12 @@ class FeedFragment : Fragment() {
                 startActivity(shareIntent)
             }
         })
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.loadPosts()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)
