@@ -78,7 +78,7 @@ class PostRepositoryImpl : PostRepository {
                             return
                         }
                         try {
-                            callback.onSuccess(gson.fromJson(responseText, typeToken.type))
+                            callback.onSuccess(gson.fromJson(responseText, Post::class.java))
                         } catch (e: Exception) {
                             callback.onError(java.lang.RuntimeException("body is null"))
                         }
@@ -108,7 +108,7 @@ class PostRepositoryImpl : PostRepository {
                             return
                         }
                         try {
-                            callback.onSuccess(gson.fromJson(responseText, typeToken.type))
+                            callback.onSuccess(gson.fromJson(responseText, Post::class.java))
                         } catch (e: Exception) {
                             callback.onError(java.lang.RuntimeException("body is null"))
                         }
@@ -124,10 +124,27 @@ class PostRepositoryImpl : PostRepository {
             .url("${BASE_URL}/api/slow/posts")
             .build()
 
-        client.newCall(request)
-            .execute()
-            .close()
+        return client.newCall(request)
+            .enqueue(
+                object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        callback.onError(e)
+                    }
 
+                    override fun onResponse(call: Call, response: Response) {
+                        val responseText = response.body?.string()
+                        if (responseText == null) {
+                            callback.onError(java.lang.RuntimeException("body is null"))
+                            return
+                        }
+                        try {
+                            callback.onSuccess(gson.fromJson(responseText, typeToken.type))
+                        } catch (e: Exception) {
+                            callback.onError(java.lang.RuntimeException("body is null"))
+                        }
+                    }
+                }
+            )
     }
 
     override fun removeByIdAsync(id: Long, callback: PostRepository.Callback<Post>) {
