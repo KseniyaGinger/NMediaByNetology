@@ -132,10 +132,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             )
         )
         try {
-            repository.removeByIdAsync(id, object : PostRepository.Callback<Post> {
+            repository.removeByIdAsync(id, object : PostRepository.Callback<Unit> {
 
-                override fun onSuccess(result: Post) {
-                   /* _data.postValue(FeedModel(posts = result, empty = result.isEmpty())) */
+                override fun onSuccess(result: Unit) {
+                    /* _data.postValue(FeedModel(posts = result, empty = result.isEmpty())) */
                 }
 
                 override fun onError(e: Exception) {
