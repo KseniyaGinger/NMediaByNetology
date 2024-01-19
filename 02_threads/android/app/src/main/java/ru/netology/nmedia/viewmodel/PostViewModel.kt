@@ -51,11 +51,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun save() {
         edited.value?.let {
-            repository.saveAsync(it, object : PostRepository.Callback<Post> {
+            repository.saveAsync(it, object : PostRepository.Callback<Unit> {
 
-                override fun onSuccess(result: Post) {
-                    _postCreated.postValue(Unit)
-                   /* _data.postValue(FeedModel(posts = result, empty = result.isEmpty())) */
+                override fun onSuccess(result: Unit) {
+                    TODO("Not yet implemented")
                 }
 
                 override fun onError(e: Exception) {
