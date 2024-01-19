@@ -89,7 +89,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitgson_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttplogging_version"
