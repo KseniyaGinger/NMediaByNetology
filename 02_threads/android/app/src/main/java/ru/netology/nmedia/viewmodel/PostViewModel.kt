@@ -80,7 +80,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun likeById(post: Post) {
         try {
             val updated = if (post.likedByMe) {
-                repository.unlikeByIdAcync(post.id, object : PostRepository.Callback<Post> {
+                repository.unlikeByIdAsync(post.id, object : PostRepository.Callback<Post> {
 
                     override fun onSuccess(result: Post) {
                         val newPosts = _data.value?.posts?.map {

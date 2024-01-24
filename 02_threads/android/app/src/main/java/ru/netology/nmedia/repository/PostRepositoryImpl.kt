@@ -1,12 +1,11 @@
 package ru.netology.nmedia.repository
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.internal.EMPTY_REQUEST
 import ru.netology.nmedia.api.PostsApi
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModel
@@ -40,7 +39,6 @@ class PostRepositoryImpl : PostRepository {
                     callback.onError(RuntimeException(response.message()))
                     return
                 }
-
                 callback.onSuccess(response.body() ?: throw RuntimeException("body is null"))
             }
 
@@ -68,22 +66,25 @@ class PostRepositoryImpl : PostRepository {
         })
     }
 
-    override fun unlikeByIdAcync(id: Long, callback: PostRepository.Callback<Post>) {
+    override fun unlikeByIdAsync(id: Long, callback: PostRepository.Callback<Post>) {
 
         PostsApi.retrofitService.unlikeById(id).enqueue(object : Callback<Post> {
 
             override fun onResponse(call: Call<Post>, response: Response<Post>) {
                 if (response.isSuccessful) {
                     callback.onSuccess(response.body()!!)
+                } else if (response.code() == 500) {
+                    callback.onError(Exception("фиксики уже чинят сервер!"))
                 } else {
                     callback.onError(RuntimeException("Response is not successful"))
+                    }
                 }
-            }
 
             override fun onFailure(call: Call<Post>, t: Throwable) {
                 callback.onError(Exception(t))
             }
-        })
+        }
+        )
     }
 
 
